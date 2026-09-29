@@ -76,7 +76,7 @@
   form { width: 100%; display: grid; gap: 10px; }
   label[for="pw"] { font-family: var(--f-hand); font-size: 1.3rem; }
   .row { display: flex; gap: 10px; }
-  input[type="password"] {
+  #pw {
     flex: 1;
     min-width: 0;
     font: inherit;
@@ -124,9 +124,10 @@
   <form id="gate-form">
     <label for="pw">Password</label>
     <div class="row">
-      <input id="pw" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" required>
+      <input id="pw" type="text" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" required>
       <button type="submit">Open</button>
     </div>
+    <label class="keep"><input id="show" type="checkbox" checked> Show password</label>
     <label class="keep"><input id="keep" type="checkbox" checked> Remember me on this device</label>
     <p id="msg" role="status" aria-live="polite"></p>
   </form>
@@ -139,7 +140,13 @@
     var form = document.getElementById("gate-form");
     var input = document.getElementById("pw");
     var keep = document.getElementById("keep");
+    var showPw = document.getElementById("show");
     var msg = document.getElementById("msg");
+    // the password shows as it's typed unless the box is unticked
+    showPw.addEventListener("change", function () {
+      input.type = showPw.checked ? "text" : "password";
+      input.focus();
+    });
     var subtle = window.crypto && window.crypto.subtle;
 
     function bytes(b64) {
